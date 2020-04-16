@@ -57,7 +57,7 @@ REST_FRAMEWORK = {
 
 #JWT
 JWT_AUTH = {
-    'JWT_EXPIRAITON_DELTA': datetime.timedelta(minutes=30),
+    'JWT_EXPIRAITON_DELTA': datetime.timedelta(days=1),
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'use_api.utils.jwt_response_payload_handler',
 }
 

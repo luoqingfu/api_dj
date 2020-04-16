@@ -14,15 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from rest_framework_jwt.views import obtain_jwt_token
 
-from use_api.views import api_list, api_detail, api_delete
+from use_api import urls
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', obtain_jwt_token),
-    path('apilist/', api_list),
-    path('apidetail/<int:pk>/', api_detail),
-    path('apidelete/<int:pk>/', api_delete)
+    path('api/', include(urls))
 ]
