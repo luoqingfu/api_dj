@@ -1,9 +1,4 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
-
-
-
-
 class Api(models.Model):
     name = models.CharField(verbose_name='接口名称', max_length=30)
     api = models.CharField(verbose_name='接口', max_length=300)
@@ -15,6 +10,7 @@ class Api(models.Model):
         return self.name
 
     class Meta:
+        db_table = 'api'
         verbose_name = '接口'
         verbose_name_plural = verbose_name
         ordering = ('name',)
