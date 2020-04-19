@@ -46,7 +46,7 @@ INSTALLED_APPS = [
 ]
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+        #'rest_framework.permissions.IsAuthenticated
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
@@ -57,7 +57,7 @@ REST_FRAMEWORK = {
 
 #JWT
 JWT_AUTH = {
-    'JWT_EXPIRAITON_DELTA': datetime.timedelta(days=1),
+    'JWT_EXPIRAITON_DELTA': datetime.timedelta(days=2),
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'use_api.utils.jwt_response_payload_handler',
 }
 
