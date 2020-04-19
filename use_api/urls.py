@@ -1,9 +1,10 @@
 from django.urls import path
 
-from use_api.api import Api
+from use_api.api.Api import Apiview, Search, Delete, ApiAlter
 
 urlpatterns = [
-    path('apilist/', Api.Api_view.api_list),
-    path('apidetail/<int:pk>/', Api.Api_view.api_detail),
-    path('apidelete/<int:pk>/', Api.Api_view.api_delete),
+    path('apilist/', Apiview.as_view()),
+    path('search/', Search.as_view()),
+    path('delete/', Delete.as_view()),
+    path('alter/', ApiAlter.as_view())
 ]
