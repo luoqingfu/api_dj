@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'use_api',
-    'corsheaders'#跨域
+    'corsheaders',  # 跨域
 ]
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -141,8 +141,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-CORS_ORIGIN_ALLOW_ALL = True #跨域
-CORS_ALLOW_CREDENTIALS = True #跨域
+CORS_ORIGIN_ALLOW_ALL = True  # 跨域
+CORS_ALLOW_CREDENTIALS = True  # 跨域
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 

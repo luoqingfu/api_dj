@@ -4,8 +4,8 @@ from rest_framework import status, generics, filters
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from use_api.models import Api
-from use_api.serializers import ApiSerializers
+from use_api.models import Api, Project
+from use_api.serializers import ApiSerializers, ProjectSerializers
 
 
 class Apiview(APIView):
@@ -16,15 +16,44 @@ class Apiview(APIView):
         :return:
         """
         try:
-            page_size = int(request.GET.get('pageSize'))
-            page = int(request.GET.get('page'))
+            page_size = int(request.GET.get('pageSize', 20))
+            page = int(request.GET.get('page', 1))
         except (TypeError, ValueError):
             return Response({
                 'code': 999,
                 'msg': 'page and page_size must be integer!'
             })
-        api = Api.objects.all().order_by('id')
-        paginator = Paginator(api, page_size)  # paginator对象
+        project_id = request.GET.get('project_id')
+        group_id = request.GET.get('group_id')
+        # 校验参数
+        if not project_id.isdecimal():
+            return Response({
+                'code': 999,
+                'msg': '请求参数有误'
+            })
+        if not group_id.isdecimal():
+            return Response({
+                'code': 999,
+                'msg': '请求参数有误'
+            })
+        # 校验项目是否存在
+        try:
+            pro_obj = Project.objects.get(project_id)
+        except ObjectDoesNotExist:
+            return Response({
+                'code': 999,
+                'msg': '项目不存在'
+            })
+        # 序列化项目数据
+        pro_data = ProjectSerializers(pro_obj)
+        if pro_data.data['status'] == 'False':
+            return Response({
+                'code': 999,
+                'msg': '该项目已禁用'
+            })
+        # 查找该项目下的所有接口
+        api =
+        paginator = Paginator(api, page_size)  # paginator对象 相当于获取了这个分页大小下的每一个分页的数据
         total = paginator.num_pages  # 总页数
         try:
             cur_page = paginator.page(page)
@@ -56,6 +85,7 @@ class Apiview(APIView):
         :return:
         """
         api_serializers = ApiSerializers(data=request.data)
+        print(request.data['name'])
         if api_serializers.is_valid():
             api_serializers.save()
             return Response({
@@ -86,7 +116,6 @@ class Search(APIView):
         page = request.GET.get('page', 1)
         try:
             name = request.GET.get('name')
-            print(name)
             api = Api.objects.filter(name__contains=name).order_by('id')
         except ObjectDoesNotExist:
             return Response({
@@ -120,7 +149,7 @@ class Delete(APIView):
         """
         try:
             pk = request.GET.get('id')
-            api = Api.objects.get(pk=pk)
+            api = Api.objects.filter(pk=pk)
         except ObjectDoesNotExist:
             return Response({
                 'code': 999,
@@ -148,7 +177,7 @@ class ApiAlter(APIView):
         """
         pk = request.GET.get('id')
         try:
-            api = Api.objects.get(pk=pk)
+            api = Api.objects.filter(pk=pk)
         except ObjectDoesNotExist:
             return Response({
                 'code': 999,
